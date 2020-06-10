@@ -1,8 +1,10 @@
 from os import path
 
-if __name__ == "__main__":
+if __name__ == '__main__':
     
-    source = open('./test.java', 'r')
+    file_name = 'test.java'
+    file_path = path.join(path.dirname(path.abspath(__file__)), file_name)
+    source = open(file_path, 'r')
     
     extension = path.splitext(source.name)[1][1:]
 
