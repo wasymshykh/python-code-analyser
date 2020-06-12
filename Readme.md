@@ -6,24 +6,37 @@
 
 #### Features
 
-- [ ] LOC 🍭
-- [ ] BLOC 🍭
+- [x] LOC 🍭
+- [x] BLOC 🍭
 - [ ] Listing ⚰
-  - [ ] variables
-    - [ ] local
-    - [ ] global
+  - [x] variables
+    - [x] local
+    - [x] global
   - [ ] functions
     - [ ] public
     - [ ] private
     - [ ] static
-  - [ ] classes
-    - [ ] public
-    - [ ] private
-    - [ ] abstract
-    - [ ] interface
+  - [x] classes
+    - [x] public
+    - [x] private
+    - [x] abstract
+    - [x] final
+    - [x] static
+    - [x] default
 - [ ] Feature Matrix ⚰☹
 - [ ] Halstead ⚰☹
 - [ ] Code similarity ⚰☹
 - [ ] Flask API 🚀
+
+#### How to run
+
+change path of java file in _main.py_ and run main file.
+
+```console
+# terminal
+$ git clone https://github.com/wasymshykh/python-code-analyser
+$ cd python-code-analyser
+$ python main.py
+```
 
 Note: *I'm going to spend few hours on this project it is no way any good/useful project*
