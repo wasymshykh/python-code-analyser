@@ -7,11 +7,17 @@
 public class Simple {
     public String name = "Hello";
     public String number;
+    public int number;
 
     public static void main(String args[]){
         
+        int a = 0;
+
         // prints data to console
-        Scanner sc = new Scanner()
+        Scanner sc = new Scanner();
+
+        Scanner si;
+        si = new Scanner();
         System.out.println("Hello Java"); // Hello
     }  
 } 

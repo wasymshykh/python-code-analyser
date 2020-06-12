@@ -144,7 +144,51 @@ class Calculate:
 
 
     def variables(self):
-       return
+
+        # returned data: format -> {'[type]': {'name'}}
+
+        data = {}
+
+        for source_line in self.clean_source:
+            
+            # instance variables: format -> [str] [name] = new [str];
+            temp = re.findall(r"(\w+)\s+(\w+)\s*=\s*new\s+(\w+)\s*[().\w]+;", source_line)
+            if len(temp) > 0:
+                if temp[0][0] in data.keys():
+                    if temp[0][1] not in data[temp[0][0]]:
+                        data[temp[0][0]].append(temp[0][1])
+                else:
+                    data[temp[0][0]] = [temp[0][1]]
+
+            # instance variables: format -> [name] = new [str];
+            temp = re.findall(r"(\w+)\s*=\s*new\s+(\w+)\s*[().\w]+;", source_line)
+            if len(temp) > 0:
+                if temp[0][1] in data.keys():
+                    if temp[0][0] not in data[temp[0][1]]:
+                        data[temp[0][1]].append(temp[0][0])
+                else:
+                    data[temp[0][1]] = [temp[0][0]]
+                
+            # primitive variables: format -> [int|float|byte|char|boolean|short|long|double] [name] = [str];
+            temp = re.findall(r"(int|float|byte|char|boolean|short|long|double)\s+(\w+)\s*(=\s*|\w|\s*)*;", source_line)
+            if len(temp) > 0:
+                if temp[0][0] in data.keys():
+                    if temp[0][1] not in data[temp[0][0]]:
+                        data[temp[0][0]].append(temp[0][1])
+                else:
+                    data[temp[0][0]] = [temp[0][1]]
+
+            # non-primitive variables: format -> [int|float|byte|char|boolean|short|long|double] [name] = [str];
+            temp = re.findall(r"(String)\s+(\w+)\s*(=\s*|\w|\s*)*;", source_line)
+            if len(temp) > 0:
+                if temp[0][0] in data.keys():
+                    if temp[0][1] not in data[temp[0][0]]:
+                        data[temp[0][0]].append(temp[0][1])
+                else:
+                    data[temp[0][0]] = [temp[0][1]]
+
+
+        return data
 
 
 
@@ -158,4 +202,5 @@ if __name__ == '__main__':
 
     c = Calculate(r.get_lines_list_clean())
     
+    print(c.variables())
     
