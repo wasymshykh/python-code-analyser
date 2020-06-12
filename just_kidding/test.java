@@ -4,7 +4,18 @@
 
 /* Waseem */
 
-class Simple {  
+public class Simple {
+    public String name = "Hello";
+    public String number;
+
+    public static void main(String args[]){
+        
+        // prints data to console
+        Scanner sc = new Scanner()
+        System.out.println("Hello Java"); // Hello
+    }  
+} 
+private class Simple {  
     public static void main(String args[]){
         
         // prints data to console
@@ -12,3 +23,5 @@ class Simple {
         System.out.println("Hello Java"); // Hello
     }  
 } 
+
+private class Sple {} private class Sim {}
