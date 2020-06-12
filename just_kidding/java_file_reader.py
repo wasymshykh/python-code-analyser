@@ -53,7 +53,7 @@ class Calculate:
             print("Source code cannot be empty!")
             
         self.source = source
-        self.clean_source = self.remove_comments()
+        self.clean_source = self.normalize_code()
 
     def loc(self):
         loc = 0
@@ -79,7 +79,7 @@ class Calculate:
                 cloc += 1
         return { 'loc': loc, 'sloc': sloc, 'cloc': cloc, 'ncloc': loc - cloc }
 
-    def remove_comments(self):
+    def normalize_code(self):
         without_comments = []
 
         iscomment = False
@@ -139,14 +139,12 @@ class Calculate:
                 if len(temp) > 0:
                     static_classes += temp
 
-        return { 'all_classes': classes, 'public_classes': public_classes, 'private_classes': private_classes,
-        'abstract_classes': abstract_classes, 'final_classes': final_classes, 'static_classes': static_classes }
+        return { 'all': classes, 'public': public_classes, 'private': private_classes,
+        'abstract': abstract_classes, 'final': final_classes, 'static': static_classes }
 
 
     def variables(self):
-
-        # returned data: format -> {'[type]': {'name'}}
-
+        # returned data: format -> {'[type]': ['[name]']}
         data = {}
 
         for source_line in self.clean_source:
@@ -178,7 +176,7 @@ class Calculate:
                 else:
                     data[temp[0][0]] = [temp[0][1]]
 
-            # non-primitive variables: format -> [int|float|byte|char|boolean|short|long|double] [name] = [str];
+            # non-primitive variables: format -> [String] [name] = [str];
             temp = re.findall(r"(String)\s+(\w+)\s*(=\s*|\w|\s*)*;", source_line)
             if len(temp) > 0:
                 if temp[0][0] in data.keys():
@@ -187,11 +185,71 @@ class Calculate:
                 else:
                     data[temp[0][0]] = [temp[0][1]]
 
+            # array variables: format -> [str[]] [name] = [str];
+            temp = re.findall(r"(\w+)(\[{1}\]{1})+\s+(\w+)\s*", source_line)
+            if len(temp) > 0:
+                print(temp)
+                key = temp[0][0] + temp[0][1]
+                if key in data.keys():
+                    if temp[0][2] not in data[key]:
+                        data[temp[0][0]].append(temp[0][2])
+                else:
+                    data[key] = [temp[0][2]]
 
         return data
 
+    def print_data(self):
+        classes = self.classes()
 
+        print("--------------------------------------------")
+        print("------------------ START -------------------")
+        print("--------------------------------------------")
+        print("")
+        print("CLASSES - {}".format(len(classes['all'])))
+        print("Overall classes {}".format(classes['all']))
+        print("")
+        print("-- TYPES")
+        for key in classes:
+            if key != 'all' and len(classes[key]) > 0:
+                print("---- {} - {} -> {}".format(key, len(classes[key]), classes[key]))
+        print("--------------------------------------------")
 
+        variables = self.variables()
+
+        print("---------------------")
+        print("---------------------")
+        print("")
+        print("VARIABLES")
+        variables_types = [n for n in variables]
+        print("Type of variables used - {} -> {}".format(len(variables), variables_types))
+        print("")
+        print("-- TYPES")
+        for key in variables:
+            if len(variables[key]) > 0:
+                print("---- {} - {} -> {}".format(key, len(variables[key]), variables[key]))
+        print("--------------------------------------------")
+
+        loc = self.loc()
+
+        print("---------------------")
+        print("---------------------")
+        print("")
+        print("OTHER INFORMATION")
+        print("")
+        print("-- Lines of code")
+        print("---- LOC -> {}".format(loc['loc']))
+        print("-- Source Lines of code")
+        print("---- SLOC -> {}".format(loc['sloc']))
+        print("-- Comments Lines of code")
+        print("---- CLOC -> {}".format(loc['cloc']))
+        print("-- Non-Comments Lines of code")
+        print("---- NCLOC -> {}".format(loc['ncloc']))
+        print("")
+        print("--------------------------------------------")
+        print("------------------- END --------------------")
+        print("--------------------------------------------")
+
+        # 'loc': loc, 'sloc': sloc, 'cloc': cloc, 'ncloc': loc - cloc 
 
 if __name__ == '__main__':
     
@@ -201,6 +259,5 @@ if __name__ == '__main__':
     r = ReadFile(file_path)
 
     c = Calculate(r.get_lines_list_clean())
-    
-    print(c.variables())
-    
+    c.print_data()
+

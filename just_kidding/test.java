@@ -12,6 +12,7 @@ public class Simple {
     public static void main(String args[]){
         
         int a = 0;
+        int[] arr = [1,2,3]
 
         // prints data to console
         Scanner sc = new Scanner();
