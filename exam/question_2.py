@@ -4,12 +4,6 @@ from sklearn.metrics.pairwise import cosine_similarity
 import pandas as pd
 import copy
 
-if __name__ == "__main__":
-    
-    features = ['package','public','private','protected','class','abstract','interface','extends','implements','try','catch','finally','throw','throws','void','static','final','finalize','import']
-    ngram_value = 2
-
-
 class Util:
     @staticmethod
     def normalize_string(string_data):
@@ -76,27 +70,32 @@ class ReadFile:
         self.file.close()
 
 
-rf = ReadFile('test/file_1.py')
-string_data_1 = rf.read_string()
-rf.clear()
-normalized_1 = Util.normalize_string(string_data_1)
-tokenized_1 = Util.tokenize_string(normalized_1)
-feature_vector_1 = Util.empty_feature_vector()
-ngram_object_1 = Util.token_ngram(tokenized_1)
-frequency_1 = Util.frequency(ngram_object_1)
-vector_1 = Util.vector_assignment(frequency_1, feature_vector_1)
-df_1 = pd.DataFrame([vector_1])
+if __name__ == "__main__":
+    
+    features = ['package','public','private','protected','class','abstract','interface','extends','implements','try','catch','finally','throw','throws','void','static','final','finalize','import']
+    ngram_value = 2
 
-rf = ReadFile('test/file_2.py')
-string_data_2 = rf.read_string()
-rf.clear()
-normalized_2 = Util.normalize_string(string_data_2)
-tokenized_2 = Util.tokenize_string(normalized_2)
-feature_vector_2 = Util.empty_feature_vector()
-ngram_object_2 = Util.token_ngram(tokenized_2)
-frequency_2 = Util.frequency(ngram_object_2)
-vector_2 = Util.vector_assignment(frequency_2, feature_vector_2)
-df_2 = pd.DataFrame([vector_2])
+    rf = ReadFile('test/file_1.py')
+    string_data_1 = rf.read_string()
+    rf.clear()
+    normalized_1 = Util.normalize_string(string_data_1)
+    tokenized_1 = Util.tokenize_string(normalized_1)
+    feature_vector_1 = Util.empty_feature_vector()
+    ngram_object_1 = Util.token_ngram(tokenized_1)
+    frequency_1 = Util.frequency(ngram_object_1)
+    vector_1 = Util.vector_assignment(frequency_1, feature_vector_1)
+    df_1 = pd.DataFrame([vector_1])
 
-similarity = Util.cosine_similarity(df_1, df_2)
-print(similarity)
+    rf = ReadFile('test/file_2.py')
+    string_data_2 = rf.read_string()
+    rf.clear()
+    normalized_2 = Util.normalize_string(string_data_2)
+    tokenized_2 = Util.tokenize_string(normalized_2)
+    feature_vector_2 = Util.empty_feature_vector()
+    ngram_object_2 = Util.token_ngram(tokenized_2)
+    frequency_2 = Util.frequency(ngram_object_2)
+    vector_2 = Util.vector_assignment(frequency_2, feature_vector_2)
+    df_2 = pd.DataFrame([vector_2])
+
+    similarity = Util.cosine_similarity(df_1, df_2)
+    print(similarity)
