@@ -82,7 +82,6 @@ def source_details(_operators: dict, _operands):
     return data
 
 def check_bugs(_operators, _operands):
-    
     errors = 0
 
     # brackets not equal
@@ -97,7 +96,6 @@ def check_bugs(_operators, _operands):
     for o in _operands:
         if _operands[o] < 2:
             errors += 0.25
-    
 
     return errors
 
@@ -107,7 +105,7 @@ print(source_data)
 
 window = tk.Tk()
 window.title("VSA")
-window.minsize(800, 1200)
+window.minsize(800, 800)
 
 data = {'Name': [],
          'Value': []
@@ -117,16 +115,14 @@ for s in source_data:
     data['Name'].append(s)
     data['Value'].append(source_data[s])
 
-df1 = DataFrame(data,columns=['Name','Value'])
+df = DataFrame(data,columns=['Name','Value'])
 
-figure1 = plt.Figure(figsize=(12,7), dpi=80)
-ax1 = figure1.add_subplot(111)
-bar1 = FigureCanvasTkAgg(figure1, window)
-bar1.get_tk_widget().pack(side=tk.LEFT, fill=tk.BOTH)
-df1 = df1[['Name','Value']].groupby('Name').sum()
-df1.plot(kind='bar', legend=True, ax=ax1)
-ax1.set_title('Program details')
-
+figure = plt.Figure(figsize=(12,7), dpi=80)
+axi = figure.add_subplot(111)
+bar = FigureCanvasTkAgg(figure, window)
+bar.get_tk_widget().pack(side=tk.LEFT, fill=tk.BOTH)
+df = df[['Name','Value']].groupby('Name').sum()
+df.plot(kind='bar', legend=True, ax=axi)
+axi.set_title('Program details')
 
 window.mainloop()
-
