@@ -6,14 +6,15 @@ import copy
 
 class Util:
     @staticmethod
-    def normalize_string(string_data):
-        normalized=''
-        for line in string_data.split('\n'):
+    def normalize_string(lines):
+        replaceLines=lines
+        normalizedLines=''
+        for line in replaceLines.split('\n'):
             for word in line.split(' '):
                 if word not in features:
                     line=line.replace(word,'')
-                normalized+=line
-        return normalized
+            normalizedLines+=line
+        return normalizedLines
 
     @staticmethod
     def tokenize_string(normalized):
@@ -29,6 +30,7 @@ class Util:
 
     @staticmethod
     def vector_assignment(frequency, feature_vector):
+        
         dup = copy.deepcopy(feature_vector)
         for vector in dup:
             if vector in frequency:
@@ -75,7 +77,7 @@ if __name__ == "__main__":
     features = ['package','public','private','protected','class','abstract','interface','extends','implements','try','catch','finally','throw','throws','void','static','final','finalize','import']
     ngram_value = 2
 
-    rf = ReadFile('test/file_1.py')
+    rf = ReadFile('test/file_1.java')
     string_data_1 = rf.read_string()
     rf.clear()
     normalized_1 = Util.normalize_string(string_data_1)
@@ -86,7 +88,7 @@ if __name__ == "__main__":
     vector_1 = Util.vector_assignment(frequency_1, feature_vector_1)
     df_1 = pd.DataFrame([vector_1])
 
-    rf = ReadFile('test/file_2.py')
+    rf = ReadFile('test/file_2.java')
     string_data_2 = rf.read_string()
     rf.clear()
     normalized_2 = Util.normalize_string(string_data_2)
